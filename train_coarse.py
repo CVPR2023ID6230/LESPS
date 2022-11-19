@@ -2,10 +2,10 @@ import argparse
 import time
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from DNAnet_evolution import  Net
-from dataset import *
+from model.DNAnet_evolution import  Net
+from utils.dataset import *
 import matplotlib.pyplot as plt
-from metrics import *
+from utils.metrics import *
 import numpy as np
 import os
 from tqdm import tqdm
