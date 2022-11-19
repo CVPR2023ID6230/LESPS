@@ -12,16 +12,14 @@ from DANnet.model_DNANet import *
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 class Net(nn.Module):
-    def __init__(self, diffusion=True):
+    def __init__(self,):
         super(Net, self).__init__()
-        self.diffusion = diffusion
         
         self.backbone = nn.Sequential(
             DNANet(num_classes=1,input_channels=1, block=Res_CBAM_block, num_blocks=[2, 2, 2, 2], nb_filter=[16, 32, 64, 128, 256], deep_supervision=True)  
         )
         
         self.loss_center_heatmap = GaussianFocalLoss(loss_weight=1.0)#, protect=True)
-        self.loss_offset = L1Loss(loss_weight=1.0)
         
     def forward(self, img):
         center_heatmap_pred = self.backbone(img)
@@ -55,7 +53,7 @@ class Net(nn.Module):
                 center_heatmap_pred, center_heatmap_target, avg_factor=avg_factor)
         return loss_center_heatmap
         
-    def update_gt(self, gt_masks, center_heatmap_pred, thresh, size, initial=False):
+    def update_gt(self, gt_masks, center_heatmap_pred, thresh, size):
         center_heatmap_pred = center_heatmap_pred[-1]
         bs, c, feat_h, feat_w = center_heatmap_pred.shape
         update_gt_masks = gt_masks.clone()
@@ -81,7 +79,7 @@ class Net(nn.Module):
                     if (curr_mask * targets_mask).sum() == 0:
                         thresh_mask = thresh_mask - curr_mask
             
-            pred_mask_nbr = (center_heatmap_pred * thresh_mask) #/ (center_heatmap_pred * thresh_mask).max()
+            pred_mask_nbr = (center_heatmap_pred * thresh_mask)
             target_patch = (update_gt_masks * thresh_mask + pred_mask_nbr)/2
             background_patch = update_gt_masks * (1-thresh_mask)
             

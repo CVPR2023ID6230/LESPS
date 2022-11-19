@@ -56,7 +56,6 @@ class Update_mask(Dataset):
         
         img = Normalized(np.array(img, dtype=np.float32), self.img_norm_cfg)
         mask = np.array(mask, dtype=np.float32)  / 255.0
-        # mask_centroid = np.array(mask_centroid, dtype=np.float32)  / 255.0
         
         h, w = img.shape
         img = np.pad(img, ((0, (h//32+1)*32-h),(0, (w//32+1)*32-w)), mode='constant')
@@ -117,12 +116,8 @@ class TestSetLoader_mask_dataset(Dataset):
     def __init__(self, dataset_dir, dataset):
         super(TestSetLoader_mask_dataset).__init__()
         self.dataset_dir = dataset_dir
-        if dataset == 'all':
-            with open(dataset_dir+'/50_50/test.txt', 'r') as f:
-                self.train_list = f.read().splitlines()
-        else:
-            with open(dataset_dir+'/50_50/test_' + dataset + '.txt', 'r') as f:
-                self.train_list = f.read().splitlines()    
+        with open(dataset_dir+'/50_50/test_' + dataset + '.txt', 'r') as f:
+            self.train_list = f.read().splitlines()    
         self.img_norm_cfg = dict(mean=95.010, std=41.511)
     def __getitem__(self, idx):
         img = Image.open(self.dataset_dir + '/images/' + self.train_list[idx] + '.png').convert('I')
@@ -189,7 +184,7 @@ class TrainSetLoader_centroid(Dataset):
 
         return img_patch, mask_patch
     def __len__(self):
-        return len(self.train_list)
+        return 3 #len(self.train_list)
 
 class TrainSetLoader_mask(Dataset):
     def __init__(self, dataset_dir, patch_size):

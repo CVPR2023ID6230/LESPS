@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 from metrics import *
 import numpy as np
 import os
-from skimage import morphology
 from tqdm import tqdm
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
@@ -16,8 +15,8 @@ parser = argparse.ArgumentParser(description="PyTorch LESPS")
 parser.add_argument("--save_perdix", default='DNAnet_evolution', type=str, help="Save path")#gaussian_diffusion_DNAnet_deep_drop_500
 parser.add_argument("--save", default='./log_coarse', type=str, help="Save path")
 parser.add_argument("--resume", default='', type=str, help="Resume path (default: none)")#./log_show/DANnet_centroid_50.pth.tar
-parser.add_argument("--dataset_dir", default='./ataset/SIRST3', type=str, help="train_dataset")
-parser.add_argument("--batchSize", type=int, default=16, help="Training batch sizse")
+parser.add_argument("--dataset_dir", default='./dataset', type=str, help="train_dataset")
+parser.add_argument("--batchSize", type=int, default=1, help="Training batch sizse")
 parser.add_argument("--patchSize", type=int, default=256, help="Training batch size")
 parser.add_argument("--nEpochs", type=int, default=400, help="Number of epochs to train for")
 parser.add_argument("--gpu", default=0, type=int, help="gpu ids (default: 0)")
@@ -93,7 +92,7 @@ def train(train_loader, epoch_num):
         # end update?
         if end_click == 0:
             # subsequent update
-            if start_click == 1 and (idx_epoch + 1) % 5 == 0:#total_loss_list[-1] <  update_epoch_loss[-1]:
+            if start_click == 1 and (idx_epoch + 1) % 5 == 0:
                 loss_before, loss_after = update_gt_mask(net, thresh=0.5)
                 save_checkpoint({
                 'epoch': idx_epoch + 1,
@@ -125,10 +124,10 @@ def train(train_loader, epoch_num):
                   % (idx_epoch + 1, total_loss_list[-1]))
                 test(net)
 
-def update_gt_mask(net, thresh=0.7, is_initial=False):
+def update_gt_mask(net, thresh=0.7):
     test_set = Update_mask_coarse(opt.dataset_dir, update_dir=opt.save_perdix, mask_update_list=opt.train_mask_list)
     test_loader = DataLoader(dataset=test_set, num_workers=1, batch_size=1, shuffle=False)
-    eval_metric1 = mIoU(1) 
+    eval_metric_IoU = mIoU(1) 
     net.eval()
     loss_before = []
     loss_after = []
@@ -136,19 +135,16 @@ def update_gt_mask(net, thresh=0.7, is_initial=False):
         img, gt_mask_centroid = Variable(img).cuda(), Variable(gt_mask_centroid).cuda()
         center_heatmap_pred = net.forward(img)
         loss_before.append((net.loss(center_heatmap_pred, gt_mask_centroid)).detach().cpu())
-        if is_initial == True:
-            update_mask = net.update_gt_intial(gt_mask_centroid, center_heatmap_pred, thresh, size, initial=is_initial)
-        else:
-            update_mask = net.update_gt(gt_mask_centroid, center_heatmap_pred, thresh, size, initial=is_initial)
+        update_mask = net.update_gt(gt_mask_centroid, center_heatmap_pred, thresh, size)
         if isinstance(update_dir, torch.Tensor):
             opt.train_mask_list[update_dir] = update_mask[0,0,:size[0],:size[1]].cpu().detach().numpy()
         else:
             img_save = transforms.ToPILImage()((update_mask[0,:,:size[0],:size[1]]).cpu())
             img_save.save(update_dir[0])
         loss_after.append((net.loss(center_heatmap_pred, update_mask)).detach().cpu())
-        eval_metric1.update((update_mask>=0.5).cpu(), gt_mask)
+        eval_metric_IoU.update((update_mask>=0.5).cpu(), gt_mask)
         
-    results1 = eval_metric1.get_result()
+    results1 = eval_metric_IoU.get_result()
     opt.f.write("Mean IOU with GT mask:\t" + str(results1))
     opt.f.write('\n')
     opt.f.write(time.ctime()[4:-5] + ' loss_before---%f, loss_after---%f,' 
@@ -163,18 +159,16 @@ def update_gt_mask(net, thresh=0.7, is_initial=False):
 def test(net):
     test_set = TestSetLoader_mask(opt.dataset_dir)
     test_loader = DataLoader(dataset=test_set, num_workers=1, batch_size=1, shuffle=False)
-    eval_metric1 = mIoU(1) 
+    eval_metric_IoU = mIoU(1) 
     net.eval()
     for idx_iter, (img, gt_mask, gt_mask_centroid) in enumerate(test_loader):
         img = Variable(img).cuda()
         center_heatmap_pred = net.forward(img)
         if isinstance(center_heatmap_pred, list):
             center_heatmap_pred = center_heatmap_pred[-1]
-        eval_metric1.update((center_heatmap_pred>0.5).cpu(), gt_mask)
-        
+        eval_metric_IoU.update((center_heatmap_pred>0.5).cpu(), gt_mask)
     
-    results1 = eval_metric1.get_result()
-    # results3 = eval_metric3.get_results()
+    results1 = eval_metric_IoU.get_result()
     opt.f.write("Mean IOU with GT mask:\t" + str(results1))
     opt.f.write('\n')
     print("Mean IOU with GT mask:\t" + str(results1))

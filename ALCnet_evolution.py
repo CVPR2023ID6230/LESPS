@@ -14,15 +14,13 @@ from ACM.model_ACM import *
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 class Net(nn.Module):
-    def __init__(self, diffusion=True):
+    def __init__(self, ):
         super(Net, self).__init__()
-        self.diffusion = diffusion
         
         self.backbone = nn.Sequential(
             ASKCResNetFPN(),      )
         
         self.loss_center_heatmap = GaussianFocalLoss(loss_weight=1.0)#, protect=True)
-        self.loss_offset = L1Loss(loss_weight=1.0)
         
     def forward(self, img):
         center_heatmap_pred = self.backbone(img).sigmoid()
@@ -54,7 +52,7 @@ class Net(nn.Module):
                 center_heatmap_pred, center_heatmap_target, avg_factor=avg_factor)
         return loss_center_heatmap
         
-    def update_gt(self, gt_masks, center_heatmap_pred, thresh, size, initial=False):
+    def update_gt(self, gt_masks, center_heatmap_pred, thresh, size):
         bs, c, feat_h, feat_w = center_heatmap_pred.shape
         update_gt_masks = gt_masks.clone()
         background_length = 33

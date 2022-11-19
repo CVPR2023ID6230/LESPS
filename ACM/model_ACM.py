@@ -5,7 +5,6 @@ from torch.nn import BatchNorm2d
 from  torchvision.models.resnet import BasicBlock
 from .fusion import AsymBiChaFuse
 import torch.nn.functional as F
-# from model.utils import init_weights, count_param
 
 class ASKCResUNet(nn.Module):
     def __init__(self, in_channels=1, layers=[3,3,3], channels=[8,16,32,64], fuse_mode='AsymBi', tiny=False, classes=1,
@@ -18,7 +17,7 @@ class ASKCResUNet(nn.Module):
         self.momentum=0.9
         stem_width = int(channels[0])  ##channels: 8 16 32 64
         # self.stem.add(norm_layer(scale=False, center=False,**({} if norm_kwargs is None else norm_kwargs)))
-        if tiny:  # 默认是False
+        if tiny:  # False
             self.stem = nn.Sequential(
             norm_layer(in_channels,self.momentum),
             nn.Conv2d(in_channels, out_channels=stem_width * 2, kernel_size=3, stride=1,padding=1, bias=False),
@@ -155,7 +154,7 @@ def conv1x1(in_planes, out_planes, stride=1):
 
 
 #########################################################
-###2.测试ASKCResUNet
+###2.test for ASKCResUNet
 if __name__ == '__main__':
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu") # 让torch判断是否使用GPU，建议使用GPU环境，因为会快很多
     layers = [3] * 3
