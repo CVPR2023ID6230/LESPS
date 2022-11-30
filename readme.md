@@ -38,7 +38,7 @@ python test.py --model DNAnet_centroid
 ## Results
 
 ### Analyses of Mapping Degeneration
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/MD_abl.jpg" width="400"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/MD_abl.jpg" width="800"/><br>
 Figure 4. IoU and visualize results of mapping degeneration with respect to different characteristics of targets (i.e.,(a) intensity, (b) size, (c) shape, and (d) local background clutter) and point labels (i.e.,(e) numbers and (f) locations). We visualize the zoom-in target regions of input images with GT point labels (i.e., red dots in images) and corresponding CNN predictions (in the epoch reaching maximum IoU).
 
 ### Analyses of the Label Evolution Framework
@@ -47,13 +47,13 @@ Figure 4. IoU and visualize results of mapping degeneration with respect to diff
 <img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/table0.jpg" width="500"  /><br>
 Table 1. Average IoU (×10e2), Pd (×10e2) and Fa(×10e6) values on NUAA-SIRST, NUDT-SIRST and IRSTD-1K achieved by DNAnet with (w/) and without (w/o) LESPS under centroid, coarse point supervision together with full supervision.
 
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/visual1.jpg" width="400"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/visual1.jpg" width="600"/><br>
 Figure 6. Visualizations of regressed labels during training and
 network predictions during inference with centroid and coarse
 point supervision.
 
 #### Parameters
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/LESPS_abl.jpg" width="680"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/LESPS_abl.jpg" width="800"/><br>
 Figure 5. PA (P) and IoU (I) results of LESPS with respect to (a) initial evolution loss Tloss, (b) Tb and (c) k of evolution threshold, and (d) evolution frequency f.
 
 ### Quantitative Results
@@ -63,7 +63,7 @@ Figure 5. PA (P) and IoU (I) results of LESPS with respect to (a) initial evolut
 <img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/tabel1.jpg" width="550"/><br>
 Table 2.IoU (×10e2), Pd (×10e2) and Fa(×10e6) values of different methods achieved on NUAA-SIRST, NUDT-SIRST and IRSTD-1K. “CNN Full”, “CNN Centroid”, and “CNN Coarse” represent CNN-based methods under full supervision, centroid and coarse point supervision. “+” represents CNN-based methods equipped with LESPS.
 
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/visual2.jpg" width="550"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/visual2.jpg" width="800"/><br>
 Figure 7. Visual detection results of different methods achieved
 on NUAA-SIRST, NUDT-SIRST and IRSTD-1K. Correctly detected targets and false alarms are highlighted by red and orange circles, respectively.
 
