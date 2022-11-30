@@ -8,7 +8,7 @@ Pytorch implementation of our Label Evolution with Single Point Supervision (LES
 <img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/MD1.jpg" width="550"/><br>
 Figure 1. Illustrations of mapping degeneration under point supervision. CNNs always tend to segment a cluster of pixels near the targets with low confidence at the early stage, and then gradually learn to predict groundtruth point labels with high confidence.
 
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/blob/master/Figs/MD2.jpg" width="550"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/MD2.jpg" width="550"/><br>
 Figure 2. Quantitative and qualitative illustrations of mapping
 degeneration in CNNs.
 
@@ -47,7 +47,7 @@ Figure 4. IoU and visualize results of mapping degeneration with respect to diff
 <img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/table0.jpg" width="550"  /><br>
 Table 1. Average IoU (×10e2), Pd (×10e2) and Fa(×10e6) values on NUAA-SIRST, NUDT-SIRST and IRSTD-1K achieved by DNAnet with (w/) and without (w/o) LESPS under centroid, coarse point supervision together with full supervision.
 
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/blob/master/Figs/visual1.jpg" width="400"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/visual1.jpg" width="400"/><br>
 Figure 6. Visualizations of regressed labels during training and
 network predictions during inference with centroid and coarse
 point supervision.
