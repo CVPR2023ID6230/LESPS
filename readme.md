@@ -38,13 +38,13 @@ python test.py --model DNAnet_centroid
 ## Results
 
 ### Analyses of Mapping Degeneration
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/MD_abl.jpg" width="550"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/MD_abl.jpg" width="400"/><br>
 Figure 4. IoU and visualize results of mapping degeneration with respect to different characteristics of targets (i.e.,(a) intensity, (b) size, (c) shape, and (d) local background clutter) and point labels (i.e.,(e) numbers and (f) locations). We visualize the zoom-in target regions of input images with GT point labels (i.e., red dots in images) and corresponding CNN predictions (in the epoch reaching maximum IoU).
 
 ### Analyses of the Label Evolution Framework
 
 #### Effectiveness
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/table0.jpg" width="550"  /><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/table0.jpg" width="500"  /><br>
 Table 1. Average IoU (×10e2), Pd (×10e2) and Fa(×10e6) values on NUAA-SIRST, NUDT-SIRST and IRSTD-1K achieved by DNAnet with (w/) and without (w/o) LESPS under centroid, coarse point supervision together with full supervision.
 
 <img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/visual1.jpg" width="400"/><br>
@@ -53,7 +53,7 @@ network predictions during inference with centroid and coarse
 point supervision.
 
 #### Parameters
-<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/LESPS_abl.jpg" width="550"/><br>
+<img src="https://raw.github.com/CVPR2023ID6230/LESPS/master/Figs/LESPS_abl.jpg" width="680"/><br>
 Figure 5. PA (P) and IoU (I) results of LESPS with respect to (a) initial evolution loss Tloss, (b) Tb and (c) k of evolution threshold, and (d) evolution frequency f.
 
 ### Quantitative Results
